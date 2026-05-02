@@ -230,7 +230,24 @@ const COMMANDS = {
       await message.reply("Left the voice channel.");
     },
   },
-
+  
+  region: {
+    description: "Show the voice region of the bot's current voice channel",
+    usage: "!region",
+    async execute(message) {
+      if (!message.guildId) { await message.reply("Server only."); return; }
+      const connection = getVoiceConnection(message.guildId);
+      if (!connection) { await message.reply("I'm not in a voice channel right now."); return; }
+      const channel = message.guild?.members?.me?.voice?.channel;
+      if (!channel) { await message.reply("Could not determine the current voice channel."); return; }
+      const region = channel.rtcRegion ?? "Automatic (Discord picks the closest server)";
+      const state = connection.state.status;
+      await message.reply(
+        `**Voice channel:** ${channel.name}\n**Region:** ${region}\n**Connection state:** ${state}`
+      );
+    },
+  },
+  
   play: {
     description: "Play a YouTube video/song in your voice channel",
     usage: "!play <YouTube URL>",
