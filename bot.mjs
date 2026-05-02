@@ -1,9 +1,4 @@
 import "dotenv/config";
-
-// Initialize sodium encryption BEFORE any voice operations
-import sodium from "libsodium-wrappers";
-await sodium.ready;
-console.log("Sodium encryption ready");
 import {
   Client,
   GatewayIntentBits,
@@ -11,6 +6,20 @@ import {
   Events,
   PermissionsBitField,
 } from "discord.js";
+import {
+  joinVoiceChannel,
+  getVoiceConnection,
+  VoiceConnectionStatus,
+  entersState,
+  createAudioPlayer,
+  createAudioResource,
+  AudioPlayerStatus,
+  NoSubscriberBehavior,
+  generateDependencyReport,
+} from "@discordjs/voice";
+import playdl from "play-dl";
+
+console.log(generateDependencyReport());
 import {
   joinVoiceChannel,
   getVoiceConnection,
