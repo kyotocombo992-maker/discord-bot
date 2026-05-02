@@ -20,17 +20,6 @@ import {
 import playdl from "play-dl";
 
 console.log(generateDependencyReport());
-import {
-  joinVoiceChannel,
-  getVoiceConnection,
-  VoiceConnectionStatus,
-  entersState,
-  createAudioPlayer,
-  createAudioResource,
-  AudioPlayerStatus,
-  NoSubscriberBehavior,
-} from "@discordjs/voice";
-import playdl from "play-dl";
 
 // ─── Music queue (one per guild) ─────────────────────────────────────────────
 
