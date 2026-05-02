@@ -1,4 +1,9 @@
 import "dotenv/config";
+
+// Initialize sodium encryption BEFORE any voice operations
+import sodium from "libsodium-wrappers";
+await sodium.ready;
+console.log("Sodium encryption ready");
 import {
   Client,
   GatewayIntentBits,
