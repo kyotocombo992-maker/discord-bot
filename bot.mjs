@@ -359,7 +359,18 @@ const client = new Client({
 client.once(Events.ClientReady, (c) => {
   console.log(`Logged in as ${c.user.tag}`);
 });
-
+// Workaround: discord.js 14.19.x doesn't reliably forward raw voice gateway
+// events to @discordjs/voice adapters, so we do it manually.
+client.on("raw", (packet) => {
+  if (packet.t === "VOICE_SERVER_UPDATE") {
+    console.log("[Raw] VOICE_SERVER_UPDATE for guild:", packet.d?.guild_id);
+    client.voice?.adapters?.get(packet.d?.guild_id)?.onVoiceServerUpdate(packet.d);
+  }
+  if (packet.t === "VOICE_STATE_UPDATE" && packet.d?.user_id === client.user?.id) {
+    console.log("[Raw] VOICE_STATE_UPDATE (self) session:", packet.d?.session_id, "channel:", packet.d?.channel_id);
+    client.voice?.adapters?.get(packet.d?.guild_id)?.onVoiceStateUpdate(packet.d);
+  }
+});
 client.on(Events.MessageCreate, async (message) => {
   if (message.author.bot) return;
   if (!message.content.startsWith(PREFIX)) return;
